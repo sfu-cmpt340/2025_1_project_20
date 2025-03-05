@@ -64,8 +64,8 @@ Provide sufficient instructions to reproduce and install your project.
 Provide _exact_ versions, test on CSIL or reference workstations.
 
 ```bash
-git clone $THISREPO
-cd $THISREPO
+git clone [$THISREPO](https://github.com/sfu-cmpt340/2025_1_project_20.git)
+cd [$THISREPO](https://github.com/sfu-cmpt340/2025_1_project_20.git)
 conda env create -f requirements.yml
 conda activate amazing
 ```

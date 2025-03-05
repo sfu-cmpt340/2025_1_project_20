@@ -3,9 +3,13 @@ This repository is a template for your CMPT 340 course project.
 Replace the title with your project title, and **add a snappy acronym that people remember (mnemonic)**.
 
 Add a 1-2 line summary of your project here.
-Acronym: DermSynth3D
+
+## Acronym: DermSynth3D
 
 Summary: DermSynth3D synthesizes realistic skin lesion images to address the lack of available data for deep learning in medicine, overcoming privacy and ethical concerns.
+
+## What was the motive behind this topic?
+The motive behind DermSynth3D is to overcome the challenges of data scarcity in dermatology for deep learning. It addresses issues such as privacy concerns, limited labeled data, and class imbalances by generating realistic synthetic skin lesion images. This synthetic data helps to augment real datasets, enabling more robust AI models for skin disease detection while adhering to privacy regulations and ethical standards.
 
 ## Important Links
 

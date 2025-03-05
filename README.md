@@ -1,8 +1,11 @@
-# SFU CMPT 340 Project Template -- Replace with project title
+# Interactive Generation of DermSynth3D Data
 This repository is a template for your CMPT 340 course project.
 Replace the title with your project title, and **add a snappy acronym that people remember (mnemonic)**.
 
 Add a 1-2 line summary of your project here.
+Acronym: DermSynth3D
+
+Summary: DermSynth3D synthesizes realistic skin lesion images to address the lack of available data for deep learning in medicine, overcoming privacy and ethical concerns.
 
 ## Important Links
 

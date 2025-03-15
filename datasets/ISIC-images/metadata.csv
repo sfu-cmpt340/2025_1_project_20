@@ -1,0 +1,9 @@
+isic_id,attribution,copyright_license,age_approx,anatom_site_general,anatom_site_special,diagnosis_1,diagnosis_2,diagnosis_3,image_type,sex
+ISIC_0253805,International Dermoscopy Society,CC-BY-NC,65,lower extremity,acral palms or soles,Malignant,Malignant melanocytic proliferations (Melanoma),Melanoma Invasive,dermoscopic,male
+ISIC_0713136,International Dermoscopy Society,CC-BY-NC,65,lower extremity,acral palms or soles,Malignant,Malignant melanocytic proliferations (Melanoma),Melanoma Invasive,dermoscopic,female
+ISIC_3892600,International Dermoscopy Society,CC-BY-NC,65,lower extremity,acral palms or soles,Malignant,Malignant melanocytic proliferations (Melanoma),Melanoma in situ,dermoscopic,male
+ISIC_4305055,International Dermoscopy Society,CC-BY-NC,85,lower extremity,acral palms or soles,Malignant,Malignant melanocytic proliferations (Melanoma),Melanoma Invasive,dermoscopic,female
+ISIC_5681611,International Dermoscopy Society,CC-BY-NC,85,lower extremity,acral palms or soles,Malignant,Malignant melanocytic proliferations (Melanoma),Melanoma Invasive,dermoscopic,female
+ISIC_5730927,International Dermoscopy Society,CC-BY-NC,85,lower extremity,acral palms or soles,Malignant,Malignant melanocytic proliferations (Melanoma),Melanoma Invasive,dermoscopic,male
+ISIC_7650956,International Dermoscopy Society,CC-BY-NC,65,upper extremity,acral palms or soles,Malignant,Malignant melanocytic proliferations (Melanoma),Melanoma Invasive,dermoscopic,female
+ISIC_9536278,International Dermoscopy Society,CC-BY-NC,45,lower extremity,acral palms or soles,Malignant,Malignant melanocytic proliferations (Melanoma),Melanoma in situ,dermoscopic,female

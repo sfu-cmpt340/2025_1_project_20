@@ -11,6 +11,8 @@ Summary: DermSynth3D synthesizes realistic skin lesion images to address the lac
 ## What was the motive behind this topic?
 The motive behind DermSynth3D is to overcome the challenges of data scarcity in dermatology for deep learning. It addresses issues such as privacy concerns, limited labeled data, and class imbalances by generating realistic synthetic skin lesion images. This synthetic data helps to augment real datasets, enabling more robust AI models for skin disease detection while adhering to privacy regulations and ethical standards.
 
+[DermSynth3D github link](https://github.com/sfu-mial/DermSynth3D)
+
 ## Important Links
 
 | [Timesheet](https://1sfu-my.sharepoint.com/:x:/g/personal/hamarneh_sfu_ca/EQVnMvkVw5NBqdqjeR0Sy2sBDikpXcyxfIWPbuRUXovYVg?e=af9bcT) | [Slack channel](https://cmpt340spring2025.slack.com/archives/C0877AZ4ASW) | [Project report](https://www.overleaf.com/4416194535yqcgjwkxtbny#ada67e) |

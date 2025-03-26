@@ -140,9 +140,9 @@ def main():
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     # Data Loader Setup
-    dataset_paths = ['dermDatabaseOfficial/release_v0/images']  # Update the path if needed
+    dataset_paths = ['dermDatabaseOfficial/release_v0/images']  
     dataset = DermDataset(dataset_paths, img_size=(img_size, img_size), augment=True)
-    dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True, num_workers=4)
+    dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True, num_workers=2)
 
     # Initialize Models
     generator = Generator(z_dim, img_channels, feature_map_gen).to(device)
@@ -153,15 +153,13 @@ def main():
     optimizer_G = optim.Adam(generator.parameters(), lr=lr, betas=(0.5, 0.999))
     optimizer_D = optim.Adam(discriminator.parameters(), lr=lr, betas=(0.5, 0.999))
 
-    fixed_noise = torch.randn(64, z_dim, 1, 1, device=device)  # For consistent sample generation
-
-    # Training Loop
+    fixed_noise = torch.randn(64, z_dim, 1, 1, device=device)  
     for epoch in range(num_epochs):
         for i, real_images in enumerate(dataloader):
             real_images = real_images.to(device)
             batch_size_curr = real_images.size(0)
             
-            # Create labels for real and fake images
+            # Creating labels for real and fake images
             real_labels = torch.full((batch_size_curr,), 1.0, device=device)
             fake_labels = torch.full((batch_size_curr,), 0.0, device=device)
             

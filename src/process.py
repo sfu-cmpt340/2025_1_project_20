@@ -1,24 +1,37 @@
 import os
-import matplotlib.pyplot as plt
+import random
 from PIL import Image
+import matplotlib.pyplot as plt
 
-# Set the correct dataset path
-dataset_path = "./dermDatabaseOfficial/release_v0/images/A1l/"
-image_files = os.listdir(dataset_path)
+# Correct relative path to the image root folder
+dataset_path = "../dermDatabaseOfficial/release_v0/images"
 
-# Filter out only image files (JPG, JPEG, PNG)
-image_files = [f for f in image_files if f.lower().endswith((".jpg", ".jpeg", ".png"))]
+# Recursively collect all image file paths
+image_files = []
+for root, dirs, files in os.walk(dataset_path):
+    for file in files:
+        if file.lower().endswith((".jpg", ".jpeg", ".png")):
+            full_path = os.path.join(root, file)
+            image_files.append(full_path)
 
-# Check if images are found
+# Check and display results
 if not image_files:
-    print("No images found in the specified folder!")
+    print("❌ No images found in the specified folder!")
 else:
-    fig, axes = plt.subplots(1, min(5, len(image_files)), figsize=(15, 5))
+    print(f"✅ Found {len(image_files)} image(s). Showing sample...")
 
-    for ax, img_file in zip(axes, image_files[:5]):
-        img = Image.open(os.path.join(dataset_path, img_file))
+    # Randomly sample 5 unique images
+    sample_images = random.sample(image_files, k=min(5, len(image_files)))
+
+    # Plot them
+    fig, axes = plt.subplots(1, len(sample_images), figsize=(15, 5))
+    for i, img_path in enumerate(sample_images):
+        img = Image.open(img_path)
+
+        ax = axes[i] if len(sample_images) > 1 else axes
         ax.imshow(img)
-        ax.set_title(img_file)  # Show image filename
-        ax.axis("off")  # Hide axes
+        ax.set_title(os.path.basename(img_path))
+        ax.axis("off")
 
+    plt.tight_layout()
     plt.show()

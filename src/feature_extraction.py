@@ -102,121 +102,61 @@
 
 
 import os
-import cv2
-import numpy as np
 import torch
-import torchvision.models as models
 import torchvision.transforms as transforms
-from amazing.data_loader import get_dataloader
-from skimage.feature import local_binary_pattern
+from torchvision import models
+from torch.utils.data import DataLoader
+from torchvision.datasets import ImageFolder
 import pandas as pd
+from tqdm import tqdm
 
-# Use GPU if available
+# --------- CONFIG ---------
+image_folder = "../dermDatabaseOfficial/release_v0/images"
+output_csv = "extracted_features_with_labels.csv"
+batch_size = 16
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-print(f"Using device: {device}")
+# --------------------------
 
-# Parameters for LBP
-LBP_RADIUS = 3
-LBP_POINTS = 8 * LBP_RADIUS
+# Load pre-trained ResNet18 model
+model = models.resnet18(pretrained=True)
+model = torch.nn.Sequential(*list(model.children())[:-1])  # Remove FC layer
+model.to(device)
+model.eval()
 
-# Gabor filter setup
-def build_gabor_filters():
-    filters = []
-    for theta in np.arange(0, np.pi, np.pi / 4):
-        for sigma in (1, 3):
-            for frequency in (0.1, 0.3):
-                kernel = cv2.getGaborKernel((21, 21), sigma, theta, 1/frequency, 0.5, 0, ktype=cv2.CV_32F)
-                filters.append(kernel)
-    return filters
-
-def apply_gabor_filters(image, filters):
-    responses = [np.mean(cv2.filter2D(image, cv2.CV_32F, kernel)) for kernel in filters]
-    return responses
-
-# Load pretrained ResNet50 (feature extractor mode)
-resnet = models.resnet50(weights=models.ResNet50_Weights.IMAGENET1K_V1)
-resnet = torch.nn.Sequential(*list(resnet.children())[:-1])  # Remove classification head
-resnet.to(device)  # Move model to GPU
-resnet.eval()
-
-# Define transform for deep feature extraction
+# Define preprocessing pipeline
 transform = transforms.Compose([
-    transforms.ToPILImage(),
     transforms.Resize((224, 224)),
-    transforms.RandomHorizontalFlip(p=0.5),
-    transforms.RandomRotation(20),
-    transforms.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2),
     transforms.ToTensor(),
+    transforms.Normalize(mean=[0.485, 0.456, 0.406],
+                         std=[0.229, 0.224, 0.225]),
 ])
 
-# Load data with parallel loading
-DATA_DIRS = ["../datasets/ISIC-images", "../dermDatabaseOfficial/release_v0/images"]
-train_loader = get_dataloader(DATA_DIRS, batch_size=16, augment=True)
+# Load dataset
+dataset = ImageFolder(image_folder, transform=transform)
+loader = DataLoader(dataset, batch_size=batch_size, shuffle=False)
 
-gabor_filters = build_gabor_filters()
-features_list = []
+# Mapping from index to class name
+idx_to_class = {v: k for k, v in dataset.class_to_idx.items()}
 
-for i, batch in enumerate(train_loader):
-    img = batch[0]
-    if img.ndim == 3 and img.shape[0] in [1, 3]:
-        img = np.moveaxis(img, 0, -1)
-    img = np.clip(img * 255, 0, 255).astype(np.uint8)
-    img_bgr = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
-    img_gray = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2GRAY)
+# Storage for results
+all_features = []
+all_labels = []
+all_filenames = []
 
-    # RGB histograms
-    r_hist = cv2.calcHist([img_bgr], [2], None, [256], [0, 256]).flatten()
-    g_hist = cv2.calcHist([img_bgr], [1], None, [256], [0, 256]).flatten()
-    b_hist = cv2.calcHist([img_bgr], [0], None, [256], [0, 256]).flatten()
+# Extract features
+with torch.no_grad():
+    for images, labels in tqdm(loader, desc="Extracting features"):
+        images = images.to(device)
+        features = model(images).squeeze(-1).squeeze(-1)  # (B, 512)
+        all_features.extend(features.cpu().numpy())
+        all_labels.extend([idx_to_class[label.item()] for label in labels])
+        all_filenames.extend([os.path.basename(path[0]) for path in dataset.samples[len(all_filenames):len(all_filenames)+len(labels)]])
 
-    # LBP features
-    lbp = local_binary_pattern(img_gray, LBP_POINTS, LBP_RADIUS, method='uniform')
-    lbp_hist, _ = np.histogram(lbp.ravel(), bins=np.arange(0, LBP_POINTS + 3), range=(0, LBP_POINTS + 2))
-    lbp_hist = lbp_hist.astype(float) / lbp_hist.sum()
+# Create DataFrame
+feature_df = pd.DataFrame(all_features, columns=[f"resnet_{i}" for i in range(features.shape[1])])
+feature_df.insert(0, "label", all_labels)
+feature_df.insert(0, "filename", all_filenames)
 
-    # Gabor features
-    gabor_features = apply_gabor_filters(img_gray, gabor_filters)
-
-    # Deep features (move to GPU if available)
-    img_tensor = transform(img).unsqueeze(0).to(device)
-    with torch.no_grad():
-        deep_features = resnet(img_tensor).squeeze().cpu().numpy()
-
-    # Combine all features
-    combined_features = np.concatenate([r_hist, g_hist, b_hist, lbp_hist, gabor_features, deep_features])
-    features_list.append(combined_features)
-
-    if i % 50 == 0:
-        print(f"Processed {i} images")
-        print(f"Feature vector length: {len(combined_features)}")
-        print(f"First 10 features: {combined_features[:10]}")
-
-# Save extracted features
-# Create column names dynamically
-num_bins = 256
-num_gabor_filters = len(gabor_filters)
-num_deep_features = 2048  # ResNet50 feature vector size
-
-column_names = (
-    [f"r_hist_{i}" for i in range(num_bins)] +
-    [f"g_hist_{i}" for i in range(num_bins)] +
-    [f"b_hist_{i}" for i in range(num_bins)] +
-    [f"lbp_{i}" for i in range(len(lbp_hist))] +
-    [f"gabor_{i}" for i in range(num_gabor_filters)] +
-    [f"resnet_{i}" for i in range(num_deep_features)]
-)
-
-# Convert extracted features to DataFrame with column names
-df = pd.DataFrame(features_list, columns=column_names)
-
-# Save to CSV
-df.to_csv("extracted_features.csv", index=False)
-
-print("✅ Feature extraction complete! Saved as extracted_features.csv")
-print(f"Shape of feature matrix: {df.shape}")
-
-import pandas as pd
-
-df = pd.read_csv("extracted_features.csv")
-print(df.shape)  # Should be (num_images, 2854)
-print(df.head())  # View first few rows
+# Save
+feature_df.to_csv(output_csv, index=False)
+print(f"✅ Features saved to: {output_csv}")

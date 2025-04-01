@@ -1,42 +1,26 @@
-from amazing.data_loader import get_dataloader
-import matplotlib.pyplot as plt
-import torchvision
-import torch
-import numpy as np
+# run_all.py: One-click pipeline for DermSynth3D
 
-# Define dataset directories 
-data_dirs = [
-    "../datasets/ISIC-images",
-    "../dermDatabaseOfficial/release_v0/images"
-] 
+import os
 
-# Get dataloader generator for testing batch loading
-train_loader = get_dataloader(data_dirs, batch_size=4, augment=True)
+# Step 1: Generate synthetic images for weak classes
+print("\n🧪 [1/6] Generating synthetic images...")
+os.system("python3 train_feature/generate_synthetic.py")
 
-# --- Test loading batches by printing batch shapes ---
-print("Testing data loading...")
-for batch in train_loader:
-    print(f"Batch shape: {batch.shape}")  # Should be (batch_size, height, width, channels)
-    break  
+# Step 2: Extract features from real and synthetic images
+print("\n🔍 [2/6] Extracting features from real and synthetic datasets...")
+os.system("python3 feature_extraction.py")
 
-# --- Reload dataloader for visualization 
-train_loader = get_dataloader(data_dirs, batch_size=4, augment=True)
+# Step 3: Train and evaluate model using real, synthetic, and combined features
+print("\n🚀 [3/6] Training classifier with extracted features...")
+os.system("python3 train_feature/train_combined_features.py")
 
+# Step 4: Visualize real vs synthetic features using PCA
+print("\n🎨 [4/6] Visualizing feature space via PCA...")
+os.system("python3 train_feature/pca_visualization.py")
 
-try:
-    batch = next(train_loader)
-    print("Successfully loaded a batch for visualization.")
-except StopIteration:
-    print("Error: No batches found. Check dataset paths.")
-    exit()
+# Step 5: Evaluate synthetic image quality using FID
+print("\n📊 [5/6] Evaluating FID score...")
+os.system("python3 evaluate_quality.py")
 
-# Convert batch to tensor format for PyTorch grid visualization
-batch_tensor = torch.tensor(batch).permute(0, 3, 1, 2)  # Convert to (batch, channels, height, width)
-
-# Plot the batch images in a grid
-grid = torchvision.utils.make_grid(batch_tensor, nrow=2)
-plt.figure(figsize=(8, 8))
-plt.imshow(grid.permute(1, 2, 0).numpy())
-plt.axis('off')
-plt.title("Example Batch of Images")
-plt.show()
+# Step 6: Done!
+print("\n✅ [6/6] DermSynth3D pipeline complete!")

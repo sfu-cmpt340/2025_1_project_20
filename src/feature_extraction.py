@@ -111,8 +111,12 @@ import pandas as pd
 from tqdm import tqdm
 
 # --------- CONFIG ---------
-image_folder = "../dermDatabaseOfficial/release_v0/images"
-output_csv = "extracted_features_with_labels.csv"
+# image_folder = "../dermDatabaseOfficial/release_v0/images"
+# image_folder = "../augmented_dataset"
+image_folder = "./synthetic_dataset"
+# output_csv = "extracted_features_with_labels.csv"
+
+output_csv="synthetic_features.csv"
 batch_size = 16
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 # --------------------------

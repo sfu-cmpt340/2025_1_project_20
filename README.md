@@ -248,13 +248,3 @@ python run.py
 - One-click automation via `run.py`
 
 ---
-
-## 💬 Git & Coding Tips
-- ✅ Use informative commit messages
-- ❌ Avoid meaningless messages like `update` or `test`
-- Always `.gitignore` unnecessary files: `.idea/`, `.vscode/`, `.DS_Store`
-- Never upload raw datasets, only CSVs and outputs
-
----
-
-

@@ -7,8 +7,8 @@ import matplotlib.pyplot as plt
 
 # Load real and synthetic features
 print("📥 Loading real and synthetic features...")
-real_df = pd.read_csv("./extracted_features_with_labels.csv")
-synthetic_df = pd.read_csv("./synthetic_features.csv")
+real_df = pd.read_csv("../extracted_features_with_labels.csv")
+synthetic_df = pd.read_csv("../synthetic_features.csv")
 combined_df = pd.concat([real_df, synthetic_df], ignore_index=True)
 
 # Prepare features and labels

@@ -16,4 +16,3 @@ File descriptions:
 
 images: contains all the images
 meta: contains the meta-data and suggested indexes to use for training/validation/testing.
-clinic/derm.html: shows all the clinical and dermoscopic images, respectively.

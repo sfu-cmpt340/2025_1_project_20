@@ -4,11 +4,16 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 # Load both datasets
-real_df = pd.read_csv("../extracted_features_with_labels.csv")
+real_df = pd.read_csv("./extracted_features_with_labels.csv")
 real_df["source"] = "real"
 
-synthetic_df = pd.read_csv("../synthetic_features.csv")
+synthetic_df = pd.read_csv("./synthetic_features.csv")
 synthetic_df["source"] = "synthetic"
+
+##please uncomment the lines 14 and 15 when running in train_feature directory and comment lines 7 and 10
+# real_df = pd.read_csv("../extracted_features_with_labels.csv")
+# synthetic_df = pd.read_csv("../synthetic_features.csv")
+
 
 # Combine and isolate features
 combined_df = pd.concat([real_df, synthetic_df], ignore_index=True)

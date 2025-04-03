@@ -6,9 +6,16 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 
 # Load real and synthetic features
+
+## the file location has been used to implement run.py
 print("📥 Loading real and synthetic features...")
-real_df = pd.read_csv("../extracted_features_with_labels.csv")
-synthetic_df = pd.read_csv("../synthetic_features.csv")
+real_df = pd.read_csv("./extracted_features_with_labels.csv")
+synthetic_df = pd.read_csv("./synthetic_features.csv")
+
+##please uncomment the lines 14 and 15 when running in train_feature directory and comment 10 and 11
+# real_df = pd.read_csv("../extracted_features_with_labels.csv")
+# synthetic_df = pd.read_csv("../synthetic_features.csv")
+
 combined_df = pd.concat([real_df, synthetic_df], ignore_index=True)
 
 # Prepare features and labels

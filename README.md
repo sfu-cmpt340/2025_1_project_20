@@ -142,6 +142,8 @@ This project uses synthetic generation to:
 ## 📽️ Demo
 A walkthrough demo video of the full DermSynth3D pipeline including synthetic generation, training, and evaluation (shared separately with submission).
 
+[Video Demo](https://youtu.be/tvr8eKKy2vw)
+
 ---
 
 ## 📁 Directory Structure

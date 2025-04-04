@@ -184,8 +184,15 @@ A walkthrough demo video of the full DermSynth3D pipeline including synthetic ge
 ```bash
 git clone https://github.com/sfu-cmpt340/2025_1_project_20.git
 cd 2025_1_project_20
-conda env create -f requirements.yml
-conda activate amazing
+
+# create a python virtual environment
+python -m venv .venv
+
+# activate the virtual environment
+source .venv/bin/activate
+
+# install the requirements
+pip install -r requirements.txt
 ```
 Ensure Python ≥ 3.10 and PyTorch ≥ 2.0.
 
@@ -193,6 +200,9 @@ Ensure Python ≥ 3.10 and PyTorch ≥ 2.0.
 
 ## 🔄 Reproducing the Project
 ```bash
+
+cd src/
+
 # [1] Generate synthetic images
 python train_feature/generate_synthetic.py
 

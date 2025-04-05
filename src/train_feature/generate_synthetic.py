@@ -10,6 +10,10 @@ TARGET_CLASSES = ["Fml", "Gcl", "Gdl", "Gbl", "NHL"]
 SYNTHETIC_COUNT = 30  # per class
 # ------------------------
 
+# Ensure same results across different runs
+# NOTE: this seed was not used in the project documentation
+random.seed(100)
+
 def generate_variants(image):
     variants = []
 

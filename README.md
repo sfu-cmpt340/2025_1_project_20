@@ -1,3 +1,7 @@
+[![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://github.com/sfu-cmpt340/2025_1_project_20?tab=AGPL-3.0-1-ov-file#)
+[![YouTube Demo](https://img.shields.io/badge/Demo-YouTube-red)](https://www.youtube.com/watch?v=tvr8eKKy2vw)
+![Project Status](https://img.shields.io/badge/Status-Complete-brightgreen)
+
 # Interactive Generation of DermSynth3D Data
 
 This repository contains the complete pipeline for generating, training, and evaluating synthetic dermatology images using deep learning and statistical methods. Our project, **DermSynth3D**, addresses the challenges of limited dermatology datasets by focusing on class balancing through synthetic image generation.
@@ -5,20 +9,28 @@ This repository contains the complete pipeline for generating, training, and eva
 ---
 
 ## 🧠 Acronym: DermSynth3D
-**Dermatology Synthetic 3D** – A pipeline to synthesize realistic skin lesion images to enhance machine learning performance for underrepresented lesion classes.
+**Dermatology Synthetic 3D** – A pipeline that synthesizes realistic dermatology images for weak classes and evaluates their utility through classification and quality metrics. This project combines synthetic image generation, classical ML training, PCA visualization, and FID-based evaluation for a complete pipeline in dermatological AI.
 
 ---
-
-## 📌 Project Summary
-DermSynth3D synthesizes realistic dermatology images for weak classes and evaluates their utility through classification and quality metrics. This project combines synthetic image generation, classical ML training, PCA visualization, and FID-based evaluation for a complete pipeline in dermatological AI.
-
----
+<!-- table of contents-->
+## 📚 Table of Contents
+- [💡 Motivation](#-motivation)
+- [🔗 Important Links](#-important-links)
+- [📽️ Demo Video](#-demo)
+- [📁 Directory Structure](#-directory-structure)
+- [⚙️ Installation](#-installation)
+- [🔄 Reproducing the Project](#-reproducing-the-project)
+- [📊 Outputs Brief Summary](#-outputs-brief-summary)
+- [🚀 Future Enhancements](#-future-enhancements)
+- [✅ Status: Complete](#-status-complete)
+- [📕 Cite](#-cite)
+- [🔗 Important References](#-references)
 
 ## 💡 Motivation
 Medical image datasets often suffer from:
-- **Privacy constraints** making real data hard to collect
 - **Limited data** for rare skin conditions
 - **Severe class imbalance** in disease types
+- **Privacy constraints** making real data hard to collect
 
 This project uses synthetic generation to:
 - Expand weak class samples
@@ -41,7 +53,8 @@ This project uses synthetic generation to:
 ## 📽️ Demo
 A walkthrough demo video of the full DermSynth3D pipeline including synthetic generation, training, and evaluation (shared separately with submission).
 
-[Video Demo](https://youtu.be/tvr8eKKy2vw)
+[![YouTube](https://img.shields.io/badge/Watch%20on-YouTube-red?logo=youtube)](https://www.youtube.com/watch?v=tvr8eKKy2vw)
+[![LINK TO YT-VIDEO](./images-for-readme/for-readme.png)](https://www.youtube.com/watch?v=tvr8eKKy2vw)
 
 ---
 
@@ -82,6 +95,11 @@ A walkthrough demo video of the full DermSynth3D pipeline including synthetic ge
 ---
 
 ## ⚙️ Installation
+
+### Pre-requisites
+
+[![Git](https://img.shields.io/badge/git-%23F05033.svg?style=for-the-badge&logo=git&logoColor=white)](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+[![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)](https://www.python.org/downloads/)
 ```bash
 git clone https://github.com/sfu-cmpt340/2025_1_project_20.git
 cd 2025_1_project_20
@@ -91,7 +109,11 @@ python -m venv .venv
 
 # activate the virtual environment
 source .venv/bin/activate
+```
 
+### Python Packages
+All the required packages are listed in `requirements.txt`. You can install them using pip: <br>
+```bash
 # install the requirements
 pip install -r requirements.txt
 ```
@@ -101,7 +123,6 @@ Ensure Python ≥ 3.10 and PyTorch ≥ 2.0.
 
 ## 🔄 Reproducing the Project
 ```bash
-
 cd src/
 
 # [1] Generate synthetic images
@@ -127,22 +148,56 @@ python run.py
 
 ---
 
-## 📊 Evaluation Summary
+## 📊 Outputs Brief Summary
+
+### Classification Performance
 | Experiment        | Accuracy | FID Score |
 |------------------|----------|-----------|
 | Real Only        | ~76%     | —         |
 | Synthetic Only   | ~90%     | 131.19    |
 | Combined         | **94.12%**| —         |
 
+**Observation**: Synthetic images improved weak class performance and RandomForestClassifier gave solid performance for feature-based data
+
+### Classification Report
+| Class | Precision | Recall | F1-Score | Support |
+|-------|-----------|--------|----------|---------|
+| Fml   | 1.00      | 0.94   | 0.97     | 31      |
+| Gbl   | 0.97      | 1.00   | 0.98     | 28      |
+| Gcl   | 0.95      | 0.97   | 0.96     | 38      |
+| Gdl   | 0.90      | 0.92   | 0.91     | 38      |
+| NHL   | 0.97      | 0.94   | 0.96     | 35      |
+|       |           |        |          |         |
+| **Accuracy**    |           |        | **0.95** | **170** |
+| **Macro Avg**   | 0.96      | 0.95   | 0.96     | 170     |
+| **Weighted Avg**| 0.95      | 0.95   | 0.95     | 170     |
+
+**Observation**: High accuracy across all classes, especially for synthetic images.
+
+### Confusion Matrix
+![Confusion Matrix](./images-for-readme/Figure_1.png)
+
+**Observation**: The confusion matrix highlights high classification accuracy across all classes, with minimal confusion between similar categories, confirming that synthetic data effectively improved model performance and addressed class imbalance.
+
+
+### PCA Visualization1
+![PCA Visualization](./images-for-readme/Figure_2.png)
+
+**Observation**: The PCA plot reveals clear clustering for classes like ‘Fml’, while overlap between ‘Gbl’ and ‘Gdl’, etc. suggests shared visual features or embeddings in the feature space.
+
+### PCA Visualization2
+![PCA Visualization](./images-for-readme/Figure_3.png)
+
+**Observation**: The PCA plot shows strong overlap between real and synthetic data distributions, confirming that the synthetic images successfully mimic real feature characteristics, validating the augmentation strategy.
+
+### FID Evaluation
+113.19
+
+**Observation**: FID score ≈120–130 showed high-quality synthesis
+
 > SSIM was skipped due to dimensional mismatch errors. FID was the main quality metric.
 
 ---
-
-## 🔬 Insights
-- Synthetic images improved weak class performance
-- Combined features clustered tightly in PCA space
-- FID score ≈120–130 showed high-quality synthesis
-- RandomForestClassifier gave solid performance for feature-based data
 
 ---
 
@@ -182,3 +237,18 @@ If using our work, please cite:
 }
 ```
 ---
+
+## 🔗 Important References
+(for complete list of references, please refer to the project report)
+
+1. **Derm7pt Dataset**  
+   Kawahara, J., & Hamarneh, G. (2018). *Derm7pt: A dermatology dataset for 7-point checklist disease detection*. [https://derm.cs.sfu.ca/](https://derm.cs.sfu.ca/)
+
+2. **Synthetic Image Generation**  
+   Ghorbani, A. et al. (2020). *DermGAN: Synthetic Generation of Clinical Skin Images with Pathology*. NeurIPS ML4H Workshop.
+
+3. **Fréchet Inception Distance (FID)**  
+   Heusel, M. et al. (2017). *GANs trained by a two time-scale update rule converge to a local Nash equilibrium*. NeurIPS.
+
+4. **Feature Extraction – ResNet-18**  
+   He, K. et al. (2016). *Deep Residual Learning for Image Recognition*. CVPR.

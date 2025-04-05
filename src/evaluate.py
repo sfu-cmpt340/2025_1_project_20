@@ -6,7 +6,7 @@ import numpy as np
 import shutil
 from pathlib import Path
 from PIL import Image
-
+#its about how to flat the images
 def flatten_images(src_dir, dest_dir, resize=(299, 299)):
     os.makedirs(dest_dir, exist_ok=True)
     for ext in ["*.jpg", "*.jpeg", "*.png"]:

@@ -22,7 +22,7 @@ else:
 
     # Randomly sample 5 unique images
     sample_images = random.sample(image_files, k=min(5, len(image_files)))
-
+#vv
     # Plot them
     fig, axes = plt.subplots(1, len(sample_images), figsize=(15, 5))
     for i, img_path in enumerate(sample_images):

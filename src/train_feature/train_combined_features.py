@@ -42,9 +42,13 @@ print(classification_report(y_test, y_pred))
 # Confusion Matrix
 cm = confusion_matrix(y_test, y_pred, labels=model.classes_)
 plt.figure(figsize=(12, 8))
-sns.heatmap(cm, annot=False, xticklabels=model.classes_, yticklabels=model.classes_, cmap="Blues", fmt="d")
-plt.title("Confusion Matrix - Combined Dataset")
-plt.xlabel("Predicted")
-plt.ylabel("Actual")
+sns.heatmap(cm, annot=False, xticklabels=model.classes_, 
+            yticklabels=model.classes_, cmap="Blues", fmt="d")
+# 🧾 Customize font sizes
+plt.title("Confusion Matrix - Combined Dataset", fontsize=20)
+plt.xlabel("Predicted", fontsize=16)
+plt.ylabel("Actual", fontsize=16)
+plt.xticks(fontsize=14)
+plt.yticks(fontsize=14)
 plt.tight_layout()
 plt.show()

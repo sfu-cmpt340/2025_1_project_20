@@ -29,14 +29,17 @@ combined_df["PC2"] = pca_result[:, 1]
 # Plot by label
 plt.figure(figsize=(10, 6))
 sns.scatterplot(data=combined_df, x="PC1", y="PC2", hue="label", palette="tab20", s=40)
-plt.title("PCA: Real + Synthetic by Class")
-plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
-plt.tight_layout()
+plt.title("PCA: Real + Synthetic by Class", fontsize=16)
+plt.xlabel("PC1", fontsize=14)
+plt.ylabel("PC2", fontsize=14)
+plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left', fontsize=12)
 plt.show()
 
 # Plot by source
 plt.figure(figsize=(8, 6))
 sns.scatterplot(data=combined_df, x="PC1", y="PC2", hue="source", palette="Set1", s=60)
-plt.title("PCA: Real vs Synthetic")
-plt.tight_layout()
+plt.title("PCA: Real vs Synthetic", fontsize=16)
+plt.xlabel("PC1", fontsize=14)
+plt.ylabel("PC2", fontsize=14)
+plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left', fontsize=12)
 plt.show()

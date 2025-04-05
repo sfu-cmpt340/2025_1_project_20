@@ -14,7 +14,7 @@ for root, dirs, files in os.walk(dataset_path):
             full_path = os.path.join(root, file)
             image_files.append(full_path)
 
-# Check and display results
+# Check and display results and print whats needed
 if not image_files:
     print("❌ No images found in the specified folder!")
 else:

@@ -99,7 +99,7 @@ class Generator(nn.Module):
     
     def forward(self, x):
         return self.net(x)
-
+# for discremination
 class Discriminator(nn.Module):
     def __init__(self, channels, feature_maps):
         super(Discriminator, self).__init__()
